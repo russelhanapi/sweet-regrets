@@ -1,5 +1,6 @@
 import React from 'react';
 import { IoPerson } from 'react-icons/io5';
+import Button from '../components/ui/Button';
 
 function Home() {
   return (
@@ -28,10 +29,9 @@ function Home() {
                   <input type='search' required placeholder='Enter full name' />
                 </label>
               </div>
-
-              <button className='btn btn-primary w-full sm:w-auto'>
+              <Button type='primary' to='/menu'>
                 Get Started
-              </button>
+              </Button>
             </form>
           </div>
         </div>
