@@ -7,18 +7,18 @@ function CartItem() {
       <th>#ITEMNAME# #ITEMNAME#</th>
       <td className='text-center'>
         <div className='flex items-center justify-center gap-2'>
-          <Button type='smallSecondary'>
+          <Button type='secondary' isSmall={true} isFullWidth={false}>
             <IoAddOutline />
           </Button>
           <p className='font-medium'>1</p>
-          <Button type='smallSecondary'>
+          <Button type='secondary' isSmall={true} isFullWidth={false}>
             <IoRemoveOutline />
           </Button>
         </div>
       </td>
       <td className='text-center'>#TOTALPRICE#</td>
       <td className='text-center'>
-        <Button type='smallNeutral'>
+        <Button type='neutral' isSmall={true} isFullWidth={false}>
           <IoTrash />
         </Button>
       </td>

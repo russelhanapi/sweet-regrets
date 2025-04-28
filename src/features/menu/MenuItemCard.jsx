@@ -29,18 +29,18 @@ function MenuItemCard() {
             </p>
             <div className='card-actions items-center justify-end'>
               <div className='flex items-center justify-center gap-2'>
-                {/* <Button type='smallSecondary'>
+                {/* <Button type='secondary' isSmall={true} isFullWidth={false}>
                   <IoAddOutline />
                 </Button>
                 <p className='font-medium'>1</p>
-                <Button type='smallSecondary'>
+                <Button type='secondary' isSmall={true} isFullWidth={false}>
                   <IoRemoveOutline />
                 </Button>*/}
               </div>
-              <Button type='smallPrimary'>
+              <Button type='primary' isSmall={true} isFullWidth={false}>
                 <IoCart />
               </Button>
-              {/* <Button type='smallNeutral'>
+              {/* <Button type='neutral' isSmall={true} isFullWidth={false}>
                 <IoTrash />
               </Button> */}
             </div>
