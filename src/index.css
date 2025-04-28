@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+@plugin "daisyui";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@plugin "daisyui/theme" {
+  name: 'light';
+  default: true;
+  prefersdark: false;
+  color-scheme: 'light';
+  --color-base-100: #fdeedb;
+  --color-base-200: #f0e2d0;
+  --color-base-300: #d7caba;
+  --color-base-content: #31232b;
+  --color-primary: #bf495d;
+  --color-primary-content: #fdeedb;
+  --color-secondary: #f2d4a3;
+  --color-secondary-content: #261720;
+  --color-accent: #515a47;
+  --color-accent-content: #f2d4a3;
+  --color-neutral: #261720;
+  --color-neutral-content: #fdeedb;
+  --color-info: oklch(58% 0.158 241.966);
+  --color-info-content: #31232b;
+  --color-success: oklch(59% 0.145 163.225);
+  --color-success-content: #31232b;
+  --color-warning: oklch(68% 0.162 75.834);
+  --color-warning-content: #31232b;
+  --color-error: oklch(57% 0.245 27.325);
+  --color-error-content: #31232b;
+  --radius-selector: 0.5rem;
+  --radius-field: 1rem;
+  --radius-box: 2rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
+  --depth: 1;
+  --noise: 1;
+}
+
+@plugin "daisyui/theme" {
+  name: 'dark';
+  default: false;
+  prefersdark: true;
+  color-scheme: 'dark';
+  --color-base-100: #31232b;
+  --color-base-200: #24161e;
+  --color-base-300: #473a41;
+  --color-base-content: #fdeedb;
+  --color-primary: #bf495d;
+  --color-primary-content: #fdeedb;
+  --color-secondary: #f2d4a3;
+  --color-secondary-content: #31232b;
+  --color-accent: #515a47;
+  --color-accent-content: #f2d4a3;
+  --color-neutral: #51454d;
+  --color-neutral-content: #fdeedb;
+  --color-info: oklch(74% 0.16 232.661);
+  --color-info-content: oklch(97% 0.014 254.604);
+  --color-success: oklch(76% 0.177 163.223);
+  --color-success-content: oklch(97% 0.021 166.113);
+  --color-warning: oklch(75% 0.183 55.934);
+  --color-warning-content: oklch(98% 0.016 73.684);
+  --color-error: oklch(71% 0.194 13.428);
+  --color-error-content: oklch(97% 0.014 343.198);
+  --radius-selector: 0.5rem;
+  --radius-field: 1rem;
+  --radius-box: 2rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@layer base {
+  body {
+    font-family: 'Rubik', sans-serif;
+  }
+}
+
+@layer components {
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+}
