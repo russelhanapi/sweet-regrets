@@ -6,6 +6,7 @@ import {
 } from 'react-icons/io5';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
+import { formatCurrency } from '../../utils/helpers';
 
 function MenuItemCard({ item }) {
   const {
@@ -40,8 +41,8 @@ function MenuItemCard({ item }) {
           <div className='mt-2 flex items-center justify-between'>
             {available ? (
               <p className='text-accent grow font-medium'>
-                {price} <span className='text-base-300 mx-2'>|</span> {calories}{' '}
-                kcal
+                {formatCurrency(price)}{' '}
+                <span className='text-base-300 mx-2'>|</span> {calories} kcal
               </p>
             ) : (
               <p className='text-xs font-medium uppercase sm:text-base'>
