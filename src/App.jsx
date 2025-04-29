@@ -5,10 +5,12 @@ import Cart from './pages/Cart';
 import Order from './pages/Order';
 import AppLayout from './components/layouts/AppLayout';
 import CreateOrder from './features/order/CreateOrder';
+import Error from './pages/Error';
 
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
+    errorElement: <Error />,
     children: [
       { path: '/', element: <Home /> },
       { path: '/menu', element: <Menu /> },
