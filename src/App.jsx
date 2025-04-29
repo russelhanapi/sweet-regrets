@@ -4,6 +4,7 @@ import Menu from './pages/Menu';
 import Cart from './pages/Cart';
 import Order from './pages/Order';
 import AppLayout from './components/layouts/AppLayout';
+import CreateOrder from './features/order/CreateOrder';
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
       { path: '/', element: <Home /> },
       { path: '/menu', element: <Menu /> },
       { path: '/cart', element: <Cart /> },
+      { path: '/order/new', element: <CreateOrder /> },
       { path: '/order/:orderId', element: <Order /> },
     ],
   },
