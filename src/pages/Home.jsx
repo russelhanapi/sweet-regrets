@@ -4,7 +4,7 @@ import Button from '../components/ui/Button';
 
 function Home() {
   return (
-    <div className='hero bg-base-200 min-h-screen'>
+    <div className='hero bg-base-200 min-h-full'>
       <div className='hero-content text-center'>
         <div className='max-w-2xl sm:max-w-xl'>
           <h1 className='text-4xl/10 font-bold md:text-5xl/16'>
