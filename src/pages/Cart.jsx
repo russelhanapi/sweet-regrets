@@ -1,9 +1,15 @@
-import { Link } from 'react-router-dom';
-import CartItem from '../features/cart/CartItem';
+import { useSelector } from 'react-redux';
 import Button from '../components/ui/Button';
 import LinkButton from '../components/ui/LinkButton';
+import CartItem from '../features/cart/CartItem';
+import { getCart, getTotalCartQuantity } from '../features/cart/cartSlice';
+import EmptyCart from '../features/cart/EmptyCart';
 
 function Cart() {
+  const cart = useSelector(getCart);
+  const numOfCartItem = useSelector(getTotalCartQuantity);
+
+  if (!cart.length) return <EmptyCart />;
   return (
     <div className='bg-base-200 min-h-screen px-4 py-8 sm:py-8 md:px-8'>
       <div className='m-auto max-w-4xl'>
@@ -11,7 +17,7 @@ function Cart() {
           <div className='flex items-center justify-between'>
             <h1 className='flex items-center gap-2 text-xl font-medium md:text-2xl'>
               Cart
-              <span className='text-sm'> (6 items)</span>
+              <span className='text-sm'> ({numOfCartItem} items)</span>
             </h1>
             <LinkButton to='/menu'>Back to Menu</LinkButton>
           </div>
@@ -27,9 +33,9 @@ function Cart() {
                   </tr>
                 </thead>
                 <tbody>
-                  <CartItem />
-                  <CartItem />
-                  <CartItem />
+                  {cart.map((cartItem) => (
+                    <CartItem item={cartItem} />
+                  ))}
                 </tbody>
               </table>
             </div>
