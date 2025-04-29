@@ -1,6 +1,4 @@
-import React from 'react';
-import { IoPerson } from 'react-icons/io5';
-import Button from '../components/ui/Button';
+import CreateUser from '../features/user/CreateUser';
 
 function Home() {
   return (
@@ -18,22 +16,7 @@ function Home() {
             </span>
             (And maybe take a nap... Or cry... Either way, you’ll be back.)
           </p>
-          <div className='w-full px-4 py-4 sm:px-8'>
-            <p className='text-accent mb-5 font-medium'>
-              So, who's life are we gonna ruin today?
-            </p>
-            <form className='flex flex-col items-center justify-center gap-4 sm:flex-row'>
-              <div className='w-full'>
-                <label className='input w-full'>
-                  <IoPerson />
-                  <input type='search' required placeholder='Enter full name' />
-                </label>
-              </div>
-              <Button type='primary' to='/menu'>
-                Get Started
-              </Button>
-            </form>
-          </div>
+          <CreateUser />
         </div>
       </div>
     </div>
