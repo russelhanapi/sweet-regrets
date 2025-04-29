@@ -1,13 +1,18 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  clearCart,
+  getCart,
+  getTotalCartQuantity,
+} from '../features/cart/cartSlice';
+import CartItem from '../features/cart/CartItem';
+import EmptyCart from '../features/cart/EmptyCart';
 import Button from '../components/ui/Button';
 import LinkButton from '../components/ui/LinkButton';
-import CartItem from '../features/cart/CartItem';
-import { getCart, getTotalCartQuantity } from '../features/cart/cartSlice';
-import EmptyCart from '../features/cart/EmptyCart';
 
 function Cart() {
   const cart = useSelector(getCart);
   const numOfCartItem = useSelector(getTotalCartQuantity);
+  const dispatch = useDispatch();
 
   if (!cart.length) return <EmptyCart />;
   return (
@@ -34,7 +39,7 @@ function Cart() {
                 </thead>
                 <tbody>
                   {cart.map((cartItem) => (
-                    <CartItem item={cartItem} />
+                    <CartItem item={cartItem} key={cartItem.id} />
                   ))}
                 </tbody>
               </table>
@@ -44,7 +49,9 @@ function Cart() {
             <Button type='primary' to='/order/new'>
               Proceed to Checkout
             </Button>
-            <Button type='secondary'>Clear Cart</Button>
+            <Button type='secondary' onClick={() => dispatch(clearCart())}>
+              Clear Cart
+            </Button>
           </div>
         </div>
       </div>
