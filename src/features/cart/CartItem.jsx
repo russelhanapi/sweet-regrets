@@ -1,23 +1,21 @@
-import { IoAddOutline, IoRemoveOutline, IoTrash } from 'react-icons/io5';
-import Button from '../../components/ui/Button';
+import { useSelector } from 'react-redux';
 import { formatCurrency } from '../../utils/helpers';
+import { getQuantityByID } from './cartSlice';
+import UpdateItemQuantity from './UpdateItemQuantity';
 import DeleteItem from './DeleteItem';
 
 function CartItem({ item }) {
-  const { id, name, quantity, totalPrice } = item;
+  const { id, name, totalPrice } = item;
+  const currentItemQuantity = useSelector(getQuantityByID(id));
+
   return (
     <tr className='hover:bg-secondary/35'>
       <th>{name}</th>
       <td className='text-center'>
-        <div className='flex items-center justify-center gap-2'>
-          <Button type='secondary' isSmall={true} isFullWidth={false}>
-            <IoAddOutline />
-          </Button>
-          <p className='font-medium'>{quantity}</p>
-          <Button type='secondary' isSmall={true} isFullWidth={false}>
-            <IoRemoveOutline />
-          </Button>
-        </div>
+        <UpdateItemQuantity
+          itemId={id}
+          currentItemQuantity={currentItemQuantity}
+        />
       </td>
       <td className='text-center'>{formatCurrency(totalPrice)}</td>
       <td className='text-center'>

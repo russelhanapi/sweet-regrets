@@ -1,10 +1,11 @@
-import { IoAddOutline, IoCart, IoRemoveOutline } from 'react-icons/io5';
-import Badge from '../../components/ui/Badge';
-import Button from '../../components/ui/Button';
+import { IoCart } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem, getQuantityByID } from '../cart/cartSlice';
 import { formatCurrency } from '../../utils/helpers';
-import { useDispatch } from 'react-redux';
-import { addItem } from '../cart/cartSlice';
 import DeleteItem from '../cart/DeleteItem';
+import UpdateItemQuantity from '../cart/UpdateItemQuantity';
+import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
 
 function MenuItemCard({ item }) {
   const {
@@ -19,6 +20,8 @@ function MenuItemCard({ item }) {
   } = item;
 
   const dispatch = useDispatch();
+  const currentItemQuantity = useSelector(getQuantityByID(id));
+  const isInCart = currentItemQuantity > 0;
 
   function handleAddToCart() {
     const newItem = {
@@ -63,17 +66,17 @@ function MenuItemCard({ item }) {
             )}
 
             <div className='card-actions items-center justify-end'>
-              <div className='flex items-center justify-center gap-2'>
-                {/* <Button type='secondary' isSmall={true} isFullWidth={false}>
-                  <IoAddOutline />
-                </Button>
-                <p className='font-medium'>1</p>
-                <Button type='secondary' isSmall={true} isFullWidth={false}>
-                  <IoRemoveOutline />
-                </Button>*/}
-              </div>
-              <DeleteItem itemId={id} />
-              {available && (
+              {isInCart && (
+                <>
+                  <UpdateItemQuantity
+                    itemId={id}
+                    currentItemQuantity={currentItemQuantity}
+                  />
+                  <DeleteItem itemId={id} />
+                </>
+              )}
+
+              {available && !isInCart && (
                 <Button
                   type='primary'
                   isSmall={true}
