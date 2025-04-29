@@ -7,7 +7,17 @@ import {
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 
-function MenuItemCard() {
+function MenuItemCard({ item }) {
+  const {
+    name,
+    description,
+    calories,
+    price,
+    image_url: imageUrl,
+    category,
+    available,
+  } = item;
+
   return (
     <li className='card bg-base-100 hover:bg-secondary/35 border-base-300 w-full rounded-none border-b-2 sm:rounded-[var(--radius-box)] sm:border-t-2 sm:border-r-2 sm:border-l-2'>
       <div className='card-body flex gap-4 sm:flex-row'>
@@ -19,13 +29,14 @@ function MenuItemCard() {
         ></div>
         <div className='grow'>
           <div className='flex justify-between'>
-            <h2 className='card-title'>#NAME#</h2>
-            <Badge>#CATEGORY#</Badge>
+            <h2 className='card-title'>{name}</h2>
+            <Badge>{category}</Badge>
           </div>
-          <p className='mt-1'>#DESCRIPTION#</p>
+          <p className='mt-1'>{description}</p>
           <div className='mt-2 flex items-center justify-between'>
             <p className='text-accent grow font-medium'>
-              #PRICE# <span className='text-base-300 mx-2'>|</span> #KCAL# kcal
+              {price} <span className='text-base-300 mx-2'>|</span> {calories}{' '}
+              kcal
             </p>
             <div className='card-actions items-center justify-end'>
               <div className='flex items-center justify-center gap-2'>
