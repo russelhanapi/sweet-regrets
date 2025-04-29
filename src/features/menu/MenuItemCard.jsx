@@ -7,9 +7,12 @@ import {
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import { formatCurrency } from '../../utils/helpers';
+import { useDispatch } from 'react-redux';
+import { addItem } from '../cart/cartSlice';
 
 function MenuItemCard({ item }) {
   const {
+    id,
     name,
     description,
     calories,
@@ -18,6 +21,19 @@ function MenuItemCard({ item }) {
     category,
     available,
   } = item;
+
+  const dispatch = useDispatch();
+
+  function handleAddToCart() {
+    const newItem = {
+      id,
+      name,
+      quantity: 1,
+      price,
+      totalPrice: price + 1,
+    };
+    dispatch(addItem(newItem));
+  }
 
   return (
     <li
@@ -64,7 +80,12 @@ function MenuItemCard({ item }) {
                 <IoTrash />
               </Button> */}
               {available && (
-                <Button type='primary' isSmall={true} isFullWidth={false}>
+                <Button
+                  type='primary'
+                  isSmall={true}
+                  isFullWidth={false}
+                  onClick={handleAddToCart}
+                >
                   <IoCart />
                 </Button>
               )}

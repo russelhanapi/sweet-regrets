@@ -4,7 +4,7 @@ import { getMenu } from '../services/apiBakery';
 
 function Menu() {
   const menu = useLoaderData();
-  console.log(menu);
+
   return (
     <div className='bg-base-200 min-h-screen sm:px-4 sm:py-8 md:px-8'>
       <div className='max-container'>
