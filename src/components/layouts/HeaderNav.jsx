@@ -1,5 +1,5 @@
 import ResponsiveLogo from '../ui/ResponsiveLogo';
-import SearchBar from '../ui/SearchBar';
+import SearchOrder from '../../features/order/SearchOrder';
 import Avatar from '../ui/Avatar';
 import DarkModeToggler from '../ui/DarkModeToggler';
 
@@ -10,7 +10,7 @@ function HeaderNav() {
         <ResponsiveLogo />
         <div className='flex grow gap-3 md:w-96 md:flex-none'>
           <div className='grow'>
-            <SearchBar />
+            <SearchOrder />
           </div>
           <Avatar />
           <DarkModeToggler />
