@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import CartItem from '../features/cart/CartItem';
 import Button from '../components/ui/Button';
+import LinkButton from '../components/ui/LinkButton';
 
 function Cart() {
   return (
@@ -12,9 +13,7 @@ function Cart() {
               Cart
               <span className='text-sm'> (6 items)</span>
             </h1>
-            <Link className='link text-primary text-sm md:text-base'>
-              Back to Menu
-            </Link>
+            <LinkButton to='/menu'>Back to Menu</LinkButton>
           </div>
           <div className='secondary sm:rounded-xl sm:border sm:border-s sm:p-4'>
             <div className='flex flex-col gap-4'>
