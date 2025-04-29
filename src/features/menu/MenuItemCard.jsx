@@ -1,14 +1,10 @@
-import {
-  IoAddOutline,
-  IoCart,
-  IoRemoveOutline,
-  IoTrash,
-} from 'react-icons/io5';
+import { IoAddOutline, IoCart, IoRemoveOutline } from 'react-icons/io5';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import { formatCurrency } from '../../utils/helpers';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../cart/cartSlice';
+import DeleteItem from '../cart/DeleteItem';
 
 function MenuItemCard({ item }) {
   const {
@@ -76,9 +72,7 @@ function MenuItemCard({ item }) {
                   <IoRemoveOutline />
                 </Button>*/}
               </div>
-              {/* <Button type='neutral' isSmall={true} isFullWidth={false}>
-                <IoTrash />
-              </Button> */}
+              <DeleteItem itemId={id} />
               {available && (
                 <Button
                   type='primary'
