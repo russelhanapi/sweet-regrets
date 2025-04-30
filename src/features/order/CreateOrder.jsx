@@ -12,6 +12,7 @@ import RadioField from '../../components/ui/RadioField';
 import InputField from '../../components/ui/InputField';
 import Button from '../../components/ui/Button';
 import store from '../../../store';
+import useOrderDelivery from '../../hooks/useOrderDelivery';
 
 function CreateOrder() {
   const navigation = useNavigation();
@@ -57,20 +58,7 @@ function CreateOrder() {
 
   const orderType = useWatch({ control, name: 'orderType' });
 
-  useEffect(() => {
-    async function handleOrderDelivery() {
-      if (orderType === 'delivery') {
-        if (!geolocation?.latitude || !geolocation?.longitude) {
-          dispatch(fetchUserAddress());
-        }
-        // Recheck after fetching
-        if (geolocation?.latitude && geolocation?.longitude) {
-          dispatch(fetchDeliveryFee(geolocation));
-        }
-      } else dispatch(resetDeliveryFee());
-    }
-    handleOrderDelivery();
-  }, [dispatch, geolocation, orderType]);
+  useOrderDelivery(orderType, geolocation);
 
   const isFormValid = Object.keys(errors).length === 0;
   const onSubmit = () => {
