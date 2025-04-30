@@ -1,21 +1,25 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, useNavigation } from 'react-router-dom';
+import { Form, redirect, useNavigation, useSubmit } from 'react-router-dom';
 import { useForm, useWatch } from 'react-hook-form';
 import { IoCall, IoMap, IoPerson } from 'react-icons/io5';
-import { getTotalCartPrice } from '../cart/cartSlice';
+import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
 import { fetchUserAddress } from '../user/userSlice';
 import { fetchDeliveryFee, resetDeliveryFee } from './orderSlice';
-import { formatCurrency } from '../../utils/helpers';
+import { calculateEstimatedTime, formatCurrency } from '../../utils/helpers';
+import { addOrderItems, createOrder, getMenu } from '../../services/apiBakery';
 import RadioField from '../../components/ui/RadioField';
 import InputField from '../../components/ui/InputField';
 import Button from '../../components/ui/Button';
+import store from '../../../store';
 
 function CreateOrder() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
   const dispatch = useDispatch();
+  const submit = useSubmit();
 
+  const cart = useSelector(getCart);
   const {
     fullName,
     status: addressStatus,
@@ -45,7 +49,7 @@ function CreateOrder() {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      customerName: fullName,
+      fullName: fullName,
       orderType: 'pickup',
       address: address,
     },
@@ -69,7 +73,10 @@ function CreateOrder() {
   }, [dispatch, geolocation, orderType]);
 
   const isFormValid = Object.keys(errors).length === 0;
-
+  const onSubmit = () => {
+    const form = document.getElementById('order-form');
+    submit(form);
+  };
   return (
     <div className='bg-base-200 flex min-h-full items-center justify-center'>
       <div className='max-container px-4 py-8 sm:py-8 md:px-8'>
@@ -78,7 +85,7 @@ function CreateOrder() {
             className='w-full space-y-6'
             method='POST'
             id='order-form'
-            onSubmit={handleSubmit((data) => console.log(data))}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <fieldset className='space-y-4'>
               <div className='mb-6 space-y-3'>
@@ -90,7 +97,7 @@ function CreateOrder() {
 
               {/* Customer Name */}
               <InputField
-                name='customerName'
+                name='fullName'
                 icon={<IoPerson />}
                 register={register}
                 placeholder='e.g. Juan Dela Cruz'
@@ -176,6 +183,15 @@ function CreateOrder() {
                   />
                 )}
               </div>
+              <input type='hidden' name='cart' value={JSON.stringify(cart)} />
+              <input
+                type='hidden'
+                name='geolocation'
+                value={JSON.stringify(geolocation)}
+              />
+              <input type='hidden' name='subtotal' value={subtotal} />
+              <input type='hidden' name='deliveryFee' value={deliveryFee} />
+              <input type='hidden' name='totalAmount' value={totalAmount} />
             </fieldset>
 
             <Button
@@ -195,6 +211,56 @@ function CreateOrder() {
       </div>
     </div>
   );
+}
+
+export async function action({ request }) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  const cart = JSON.parse(data.cart);
+  const userLocation = JSON.parse(data.geolocation);
+
+  const estimatedTime = await calculateEstimatedTime(
+    userLocation,
+    data.orderType,
+  );
+
+  const orderDetails = {
+    full_name: data.fullName,
+    phone_number: data.phoneNumber,
+    notes: data.notes,
+    order_type: data.orderType,
+    address: data.address,
+    estimated_time: estimatedTime,
+    subtotal: data.subtotal,
+    delivery_fee: data.deliveryFee,
+    total_amount: data.totalAmount,
+  };
+
+  const newOrder = await createOrder(orderDetails);
+
+  console.log(newOrder.id);
+  const menuData = await getMenu();
+  const items = cart.map((cartItem) => {
+    const menuItem = menuData.find((m) => m.id === cartItem.id);
+
+    if (!menuItem) {
+      throw new Error(`Menu item with id ${cartItem.id} not found`);
+    }
+    const price = menuItem?.price || 0;
+    return {
+      order_id: newOrder.id,
+      item_id: cartItem.id,
+      quantity: cartItem.quantity,
+      total_price: price * cartItem.quantity,
+    };
+  });
+
+  console.log('items', items);
+  await addOrderItems(items);
+
+  store.dispatch(clearCart());
+
+  return redirect(`/order/${newOrder.id}`);
 }
 
 export default CreateOrder;
