@@ -53,5 +53,7 @@ const userSlice = createSlice({
       }),
 });
 
+export const getUserFullName = (state) => state.user.fullName;
+export const getUserLocation = (state) => state.user.geolocation;
 export const { writeFullName } = userSlice.actions;
 export default userSlice.reducer;

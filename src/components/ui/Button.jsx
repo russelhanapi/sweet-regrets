@@ -7,6 +7,7 @@ function Button({
   isFullWidth = true,
   isSmall = false,
   onClick,
+  disabled,
 }) {
   const base = 'btn';
   const fullWidth = isFullWidth ? 'w-full sm:w-auto' : '';
@@ -29,11 +30,15 @@ function Button({
 
   if (onClick)
     return (
-      <button className={className} onClick={onClick}>
+      <button className={className} onClick={onClick} disabled={disabled}>
         {children}
       </button>
     );
 
-  return <button className={className}>{children}</button>;
+  return (
+    <button className={className} disabled={disabled}>
+      {children}
+    </button>
+  );
 }
 export default Button;

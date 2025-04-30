@@ -1,14 +1,41 @@
 import { useEffect } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form, useNavigation } from 'react-router-dom';
-import InputField from '../../components/ui/InputField';
+import { useForm, useWatch } from 'react-hook-form';
 import { IoCall, IoMap, IoPerson } from 'react-icons/io5';
+import { getTotalCartPrice } from '../cart/cartSlice';
+import { fetchUserAddress } from '../user/userSlice';
+import { fetchDeliveryFee, resetDeliveryFee } from './orderSlice';
+import { formatCurrency } from '../../utils/helpers';
 import RadioField from '../../components/ui/RadioField';
+import InputField from '../../components/ui/InputField';
 import Button from '../../components/ui/Button';
 
 function CreateOrder() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+  const dispatch = useDispatch();
+
+  const {
+    fullName,
+    status: addressStatus,
+    geolocation,
+    address,
+    error: errorAddress,
+  } = useSelector((state) => state.user);
+  const isLoadingAddress = addressStatus === 'loading';
+
+  const {
+    deliveryFee,
+    distanceInKm,
+    status: deliveryFeeStatus,
+    error: deliveryFeeError,
+  } = useSelector((state) => state.order);
+
+  const isLoadingDeliveryFee = deliveryFeeStatus === 'loading';
+
+  const subtotal = useSelector(getTotalCartPrice);
+  const totalAmount = subtotal + deliveryFee;
 
   const {
     register,
@@ -17,10 +44,30 @@ function CreateOrder() {
     handleSubmit,
   } = useForm({
     mode: 'onChange',
-    defaultValues: { orderType: 'pickup' },
+    defaultValues: {
+      customerName: fullName,
+      orderType: 'pickup',
+      address: address,
+    },
   });
 
   const orderType = useWatch({ control, name: 'orderType' });
+
+  useEffect(() => {
+    async function handleOrderDelivery() {
+      if (orderType === 'delivery') {
+        if (!geolocation?.latitude || !geolocation?.longitude) {
+          dispatch(fetchUserAddress());
+        }
+        // Recheck after fetching
+        if (geolocation?.latitude && geolocation?.longitude) {
+          dispatch(fetchDeliveryFee(geolocation));
+        }
+      } else dispatch(resetDeliveryFee());
+    }
+    handleOrderDelivery();
+  }, [dispatch, geolocation, orderType]);
+
   const isFormValid = Object.keys(errors).length === 0;
 
   return (
@@ -51,6 +98,7 @@ function CreateOrder() {
                   required: 'Oops! Don’t forget to tell us your name.',
                 }}
                 errors={errors}
+                disabled={isLoadingAddress || isLoadingDeliveryFee}
               />
 
               {/* Phone Number */}
@@ -70,6 +118,7 @@ function CreateOrder() {
                     message: "Hmm, that doesn't seem like a valid number...",
                   },
                 }}
+                disabled={isLoadingAddress || isLoadingDeliveryFee}
               />
 
               {/* Optional Notes */}
@@ -78,6 +127,7 @@ function CreateOrder() {
                 rows={4}
                 placeholder='Got any special requests or delivery notes? Let us know here...'
                 className='textarea w-full resize-none'
+                disabled={isLoadingAddress || isLoadingDeliveryFee}
               />
 
               {/* Order Type */}
@@ -90,12 +140,25 @@ function CreateOrder() {
                     name='orderType'
                     value='pickup'
                     register={register}
+                    disabled={isLoadingAddress || isLoadingDeliveryFee}
                   />
-                  <RadioField
-                    name='orderType'
-                    value='delivery'
-                    register={register}
-                  />
+                  <div className='flex items-center gap-2'>
+                    <RadioField
+                      name='orderType'
+                      value='delivery'
+                      register={register}
+                      disabled={isLoadingAddress || isLoadingDeliveryFee}
+                    />
+
+                    {orderType === 'delivery' && (
+                      <p className='bg-secondary rounded-md px-1.5 py-1 text-[12px]'>
+                        {isLoadingDeliveryFee
+                          ? 'Calculating delivery fee...'
+                          : `${distanceInKm.toFixed(1)} km = ${formatCurrency(deliveryFee)} 
+                        delivery fee`}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 {orderType === 'delivery' && (
@@ -103,23 +166,29 @@ function CreateOrder() {
                     name='address'
                     icon={<IoMap />}
                     register={register}
-                    placeholder='Your address'
+                    placeholder='e.g. 123 Main St, Springfield, IL 62704'
                     validation={{
                       required:
                         'Where are we going? Add your delivery address.',
                     }}
                     errors={errors}
+                    disabled={isLoadingAddress || isLoadingDeliveryFee}
                   />
                 )}
               </div>
             </fieldset>
 
-            <Button disabled={isSubmitting || !isFormValid} type='primary'>
-              {isSubmitting
-                ? 'Whipping up your order...'
-                : !isFormValid
-                  ? 'Please complete all required fields'
-                  : `Order now for #TOTALAMOUNT#`}
+            <Button
+              disabled={!isFormValid || isLoadingDeliveryFee}
+              type='primary'
+            >
+              {!isFormValid
+                ? 'Please complete all required fields'
+                : isLoadingDeliveryFee
+                  ? 'Calculating total...'
+                  : isSubmitting
+                    ? 'Whipping up your order...'
+                    : `Order now for ${formatCurrency(totalAmount)}`}
             </Button>
           </Form>
         </div>
