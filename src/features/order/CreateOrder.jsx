@@ -1,16 +1,14 @@
 import { useSelector } from 'react-redux';
-import { Form, redirect, useNavigation, useSubmit } from 'react-router-dom';
+import { Form, useNavigation, useSubmit } from 'react-router-dom';
 import { IoCall, IoMap, IoPerson } from 'react-icons/io5';
 
-import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
-import { calculateEstimatedTime, formatCurrency } from '../../utils/helpers';
-import { addOrderItems, createOrder, getMenu } from '../../services/apiBakery';
-
-import store from '../../../store';
+import { formatCurrency } from '../../utils/helpers';
+import { getCart, getTotalCartPrice } from '../cart/cartSlice';
 import InputField from '../../components/ui/InputField';
 import Button from '../../components/ui/Button';
-import OrderTypeRadioGroup from './OrderTypeRadioGroup';
 import useCreateOrderForm from '../../hooks/useCreateOrderForm';
+import OrderTypeRadioGroup from './OrderTypeRadioGroup';
+import createOrderAction from './createOrderAction';
 
 function CreateOrder() {
   const {
@@ -123,7 +121,7 @@ function CreateOrder() {
                 />
               )}
 
-              {/* Hidden Input Fields: Used for  */}
+              {/* Hidden Input Fields: Used to pass data to the action() for backend processing */}
               <input type='hidden' name='cart' value={JSON.stringify(cart)} />
               <input
                 type='hidden'
@@ -153,55 +151,5 @@ function CreateOrder() {
     </div>
   );
 }
-
-export async function action({ request }) {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  const cart = JSON.parse(data.cart);
-  const userLocation = JSON.parse(data.geolocation);
-
-  const estimatedTime = await calculateEstimatedTime(
-    userLocation,
-    data.orderType,
-  );
-
-  const orderDetails = {
-    full_name: data.fullName,
-    phone_number: data.phoneNumber,
-    notes: data.notes,
-    order_type: data.orderType,
-    address: data.address,
-    estimated_time: estimatedTime,
-    subtotal: data.subtotal,
-    delivery_fee: data.deliveryFee,
-    total_amount: data.totalAmount,
-  };
-
-  const newOrder = await createOrder(orderDetails);
-
-  console.log(newOrder.id);
-  const menuData = await getMenu();
-  const items = cart.map((cartItem) => {
-    const menuItem = menuData.find((m) => m.id === cartItem.id);
-
-    if (!menuItem) {
-      throw new Error(`Menu item with id ${cartItem.id} not found`);
-    }
-    const price = menuItem?.price || 0;
-    return {
-      order_id: newOrder.id,
-      item_id: cartItem.id,
-      quantity: cartItem.quantity,
-      total_price: price * cartItem.quantity,
-    };
-  });
-
-  console.log('items', items);
-  await addOrderItems(items);
-
-  store.dispatch(clearCart());
-
-  return redirect(`/order/${newOrder.id}`);
-}
-
+export const action = createOrderAction;
 export default CreateOrder;
