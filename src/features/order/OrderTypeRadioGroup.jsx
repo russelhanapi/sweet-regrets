@@ -30,7 +30,7 @@ function OrderTypeRadioGroup({
           />
 
           {orderType === 'delivery' && (
-            <p className='bg-secondary rounded-md px-1.5 py-1 text-[12px]'>
+            <p className='bg-secondary text-secondary-content rounded-md px-1.5 py-1 text-[12px]'>
               {isLoadingDeliveryFee
                 ? 'Calculating delivery fee...'
                 : `${distanceInKm.toFixed(1)} km = ${formatCurrency(deliveryFee)} 

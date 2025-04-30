@@ -5,7 +5,7 @@ function Error() {
   const error = useRouteError();
 
   return (
-    <div className='bg-secondary text-secondary-content min-h-screen px-4 py-8 sm:py-8 md:px-8'>
+    <div className='min-h-screen px-4 py-8 sm:py-8 md:px-8'>
       <h1 className='mb-4 text-2xl font-medium sm:text-4xl'>
         Oops! That didn’t work 😅
       </h1>
