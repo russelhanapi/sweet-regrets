@@ -1,9 +1,17 @@
-function OrderItem() {
+import { formatCurrency } from '../../utils/helpers';
+
+function OrderItem({ item }) {
+  const {
+    menu: { name: itemName },
+    quantity,
+    total_price: totalPrice,
+  } = item;
+
   return (
     <tr>
-      <td>#ITEMNAME#</td>
-      <td className='text-center'>3</td>
-      <td className='text-right'>$12.00</td>
+      <td>{itemName}</td>
+      <td className='text-center'>{quantity}</td>
+      <td className='text-right'>{formatCurrency(totalPrice)}</td>
     </tr>
   );
 }
