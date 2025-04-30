@@ -1,23 +1,22 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Form, redirect, useNavigation, useSubmit } from 'react-router-dom';
 import { useForm, useWatch } from 'react-hook-form';
 import { IoCall, IoMap, IoPerson } from 'react-icons/io5';
+
 import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
-import { fetchUserAddress } from '../user/userSlice';
-import { fetchDeliveryFee, resetDeliveryFee } from './orderSlice';
 import { calculateEstimatedTime, formatCurrency } from '../../utils/helpers';
 import { addOrderItems, createOrder, getMenu } from '../../services/apiBakery';
-import RadioField from '../../components/ui/RadioField';
+
+import useOrderDelivery from '../../hooks/useOrderDelivery';
+import store from '../../../store';
+
 import InputField from '../../components/ui/InputField';
 import Button from '../../components/ui/Button';
-import store from '../../../store';
-import useOrderDelivery from '../../hooks/useOrderDelivery';
+import OrderTypeRadioGroup from './OrderTypeRadioGroup';
 
 function CreateOrder() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
-  const dispatch = useDispatch();
   const submit = useSubmit();
 
   const cart = useSelector(getCart);
@@ -57,7 +56,6 @@ function CreateOrder() {
   });
 
   const orderType = useWatch({ control, name: 'orderType' });
-
   useOrderDelivery(orderType, geolocation);
 
   const isFormValid = Object.keys(errors).length === 0;
@@ -126,51 +124,31 @@ function CreateOrder() {
               />
 
               {/* Order Type */}
-              <div className='mt-1 space-y-4'>
-                <p className='font-medium'>
-                  How would you like to receive your sweet regrets?
-                </p>
-                <div className='flex items-center gap-6'>
-                  <RadioField
-                    name='orderType'
-                    value='pickup'
-                    register={register}
-                    disabled={isLoadingAddress || isLoadingDeliveryFee}
-                  />
-                  <div className='flex items-center gap-2'>
-                    <RadioField
-                      name='orderType'
-                      value='delivery'
-                      register={register}
-                      disabled={isLoadingAddress || isLoadingDeliveryFee}
-                    />
+              <OrderTypeRadioGroup
+                register={register}
+                isLoadingAddress={isLoadingAddress}
+                isLoadingDeliveryFee={isLoadingDeliveryFee}
+                orderType={orderType}
+                distanceInKm={distanceInKm}
+                deliveryFee={deliveryFee}
+              />
 
-                    {orderType === 'delivery' && (
-                      <p className='bg-secondary rounded-md px-1.5 py-1 text-[12px]'>
-                        {isLoadingDeliveryFee
-                          ? 'Calculating delivery fee...'
-                          : `${distanceInKm.toFixed(1)} km = ${formatCurrency(deliveryFee)} 
-                        delivery fee`}
-                      </p>
-                    )}
-                  </div>
-                </div>
+              {/* Address */}
+              {orderType === 'delivery' && (
+                <InputField
+                  name='address'
+                  icon={<IoMap />}
+                  register={register}
+                  placeholder='e.g. 123 Main St, Springfield, IL 62704'
+                  validation={{
+                    required: 'Where are we going? Add your delivery address.',
+                  }}
+                  errors={errors}
+                  disabled={isLoadingAddress || isLoadingDeliveryFee}
+                />
+              )}
 
-                {orderType === 'delivery' && (
-                  <InputField
-                    name='address'
-                    icon={<IoMap />}
-                    register={register}
-                    placeholder='e.g. 123 Main St, Springfield, IL 62704'
-                    validation={{
-                      required:
-                        'Where are we going? Add your delivery address.',
-                    }}
-                    errors={errors}
-                    disabled={isLoadingAddress || isLoadingDeliveryFee}
-                  />
-                )}
-              </div>
+              {/* Hidden Input Fields: Used for  */}
               <input type='hidden' name='cart' value={JSON.stringify(cart)} />
               <input
                 type='hidden'
