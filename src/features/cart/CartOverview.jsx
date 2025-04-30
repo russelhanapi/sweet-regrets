@@ -6,6 +6,8 @@ import Button from '../../components/ui/Button';
 function CartOverview() {
   const numOfCartItem = useSelector(getTotalCartQuantity);
   const subtotal = useSelector(getTotalCartPrice);
+
+  if (!numOfCartItem) return null;
   return (
     <div className='bg-neutral text-neutral-content'>
       <div className='max-container mx-auto flex items-center justify-between px-6 py-4 text-sm font-semibold tracking-wide'>
