@@ -1,68 +1,43 @@
 import { useSelector } from 'react-redux';
 import { Form, redirect, useNavigation, useSubmit } from 'react-router-dom';
-import { useForm, useWatch } from 'react-hook-form';
 import { IoCall, IoMap, IoPerson } from 'react-icons/io5';
 
 import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
 import { calculateEstimatedTime, formatCurrency } from '../../utils/helpers';
 import { addOrderItems, createOrder, getMenu } from '../../services/apiBakery';
 
-import useOrderDelivery from '../../hooks/useOrderDelivery';
 import store from '../../../store';
-
 import InputField from '../../components/ui/InputField';
 import Button from '../../components/ui/Button';
 import OrderTypeRadioGroup from './OrderTypeRadioGroup';
+import useCreateOrderForm from '../../hooks/useCreateOrderForm';
 
 function CreateOrder() {
+  const {
+    register,
+    errors,
+    handleSubmit,
+    isLoadingAddress,
+    isLoadingDeliveryFee,
+    errorAddress,
+    distanceInKm,
+    deliveryFeeError,
+    isFormValid,
+    orderType,
+    deliveryFee,
+    geolocation,
+  } = useCreateOrderForm();
+
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === 'submitting';
   const submit = useSubmit();
 
+  const isSubmitting = navigation.state === 'submitting';
+  const onSubmit = () => submit(document.getElementById('order-form'));
+
   const cart = useSelector(getCart);
-  const {
-    fullName,
-    status: addressStatus,
-    geolocation,
-    address,
-    error: errorAddress,
-  } = useSelector((state) => state.user);
-  const isLoadingAddress = addressStatus === 'loading';
-
-  const {
-    deliveryFee,
-    distanceInKm,
-    status: deliveryFeeStatus,
-    error: deliveryFeeError,
-  } = useSelector((state) => state.order);
-
-  const isLoadingDeliveryFee = deliveryFeeStatus === 'loading';
-
   const subtotal = useSelector(getTotalCartPrice);
   const totalAmount = subtotal + deliveryFee;
 
-  const {
-    register,
-    formState: { errors },
-    control,
-    handleSubmit,
-  } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      fullName: fullName,
-      orderType: 'pickup',
-      address: address,
-    },
-  });
-
-  const orderType = useWatch({ control, name: 'orderType' });
-  useOrderDelivery(orderType, geolocation);
-
-  const isFormValid = Object.keys(errors).length === 0;
-  const onSubmit = () => {
-    const form = document.getElementById('order-form');
-    submit(form);
-  };
   return (
     <div className='bg-base-200 flex min-h-full items-center justify-center'>
       <div className='max-container px-4 py-8 sm:py-8 md:px-8'>
