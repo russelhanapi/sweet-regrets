@@ -4,6 +4,7 @@ import { IoCall, IoMap, IoPerson } from 'react-icons/io5';
 
 import { formatCurrency } from '../../utils/helpers';
 import { getCart, getTotalCartPrice } from '../cart/cartSlice';
+import EmptyCart from '../cart/EmptyCart';
 import InputField from '../../components/ui/InputField';
 import Button from '../../components/ui/Button';
 import useCreateOrderForm from '../../hooks/useCreateOrderForm';
@@ -36,6 +37,7 @@ function CreateOrder() {
   const subtotal = useSelector(getTotalCartPrice);
   const totalAmount = subtotal + deliveryFee;
 
+  if (!cart.length) return <EmptyCart />;
   return (
     <div className='bg-base-200 flex min-h-full items-center justify-center'>
       <div className='max-container px-4 py-8 sm:py-8 md:px-8'>
