@@ -1,19 +1,28 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Home from './pages/Home';
-import Cart from './pages/Cart';
-import Error from './pages/Error';
-import Menu, { loader as menuLoader } from './pages/Menu';
-import Order, { loader as orderLoader } from './pages/Order';
-import CreateOrder, {
-  action as createOrderAction,
-} from './features/order/CreateOrder';
-import AppLayout from './components/layouts/AppLayout';
-import ProtectedRoute from './pages/ProtectedRoute';
+import { Suspense, lazy } from 'react';
+
+import { loader as menuLoader } from './pages/Menu';
+import { loader as orderLoader } from './pages/Order';
+import { action as createOrderAction } from './features/order/CreateOrder';
+import Loader from './components/ui/Loader';
+
+const Home = lazy(() => import('./pages/Home'));
+const Cart = lazy(() => import('./pages/Cart'));
+const Error = lazy(() => import('./pages/Error'));
+const Menu = lazy(() => import('./pages/Menu'));
+const Order = lazy(() => import('./pages/Order'));
+const CreateOrder = lazy(() => import('./features/order/CreateOrder'));
+const AppLayout = lazy(() => import('./components/layouts/AppLayout'));
+const ProtectedRoute = lazy(() => import('./pages/ProtectedRoute'));
+
+const suspense = (children) => (
+  <Suspense fallback={<Loader />}>{children}</Suspense>
+);
 
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
-    errorElement: <Error />,
+    errorElement: suspense(<Error />),
     children: [
       { path: '/', element: <Home /> },
       {

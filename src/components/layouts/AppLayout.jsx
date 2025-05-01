@@ -1,4 +1,4 @@
-import React from 'react';
+import { Suspense } from 'react';
 import { Outlet, useNavigation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
@@ -29,7 +29,9 @@ function AppLayout() {
       {isLoading && <Loader />}
       <HeaderNav />
       <main className='overflow-y-auto'>
-        <Outlet />
+        <Suspense fallback={<Loader />}>
+          <Outlet />
+        </Suspense>
       </main>
       <CartOverview />
     </div>

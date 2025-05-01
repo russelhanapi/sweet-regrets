@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   clearCart,
@@ -5,16 +6,23 @@ import {
   getTotalCartQuantity,
 } from '../features/cart/cartSlice';
 import CartItem from '../features/cart/components/CartItem';
-import EmptyCart from '../features/cart/EmptyCart';
 import Button from '../components/ui/Button';
 import LinkButton from '../components/ui/LinkButton';
+import Loader from '../components/ui/Loader';
+
+const EmptyCart = lazy(() => import('../features/cart/EmptyCart'));
 
 function Cart() {
   const cart = useSelector(getCart);
   const numOfCartItem = useSelector(getTotalCartQuantity);
   const dispatch = useDispatch();
 
-  if (!cart.length) return <EmptyCart />;
+  if (!cart.length)
+    return (
+      <Suspense fallback={<Loader />}>
+        <EmptyCart />
+      </Suspense>
+    );
   return (
     <div className='bg-base-200 min-h-screen px-4 py-8 sm:py-8 md:px-8'>
       <div className='m-auto max-w-4xl'>
