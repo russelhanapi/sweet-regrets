@@ -2,30 +2,29 @@ import { useEffect, useState } from 'react';
 import { IoMoon, IoSunny } from 'react-icons/io5';
 
 function DarkModeToggler() {
-  // Initialize theme state based on localStorage or default to 'light'
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('theme') || 'light';
-    }
-    return 'light';
-  });
+  // Set initial theme based on localStorage or default to 'light'
+  const [theme, setTheme] = useState(
+    localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light',
+  );
 
-  // Toggle theme and update localStorage
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+  // Update theme state based on checkbox status
+  const toggleTheme = (e) => {
+    setTheme(e.target.checked ? 'dark' : 'light');
   };
 
-  // Apply theme to the HTML element
+  // Sync theme with localStorage and apply it to the HTML root element
   useEffect(() => {
-    const htmlEl = document.documentElement;
-    htmlEl.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    document.querySelector('html').setAttribute('data-theme', theme);
   }, [theme]);
 
   return (
     <label className='bg-neutral swap swap-rotate text-neutral-content w-12 rounded-full'>
-      <input type='checkbox' onClick={toggleTheme} />
+      <input
+        type='checkbox'
+        onChange={toggleTheme}
+        checked={theme === 'dark'}
+      />
       <IoSunny className='swap-off text-xl' />
       <IoMoon className='swap-on text-xl' />
     </label>

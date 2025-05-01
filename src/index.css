@@ -76,6 +76,8 @@
 @layer base {
   body {
     font-family: 'Rubik', sans-serif;
+    transition: color;
+    transition-duration: 300ms;
   }
 }
 
