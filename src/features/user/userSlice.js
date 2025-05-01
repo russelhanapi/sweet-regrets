@@ -35,6 +35,12 @@ const userSlice = createSlice({
     writeFullName(state, action) {
       state.fullName = action.payload;
     },
+    resetUserLocation(state) {
+      state.geolocation = {};
+      state.address = '';
+      state.status = 'idle';
+      state.error = '';
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -55,5 +61,5 @@ const userSlice = createSlice({
 
 export const getUserFullName = (state) => state.user.fullName;
 export const getUserLocation = (state) => state.user.geolocation;
-export const { writeFullName } = userSlice.actions;
+export const { writeFullName, resetUserLocation } = userSlice.actions;
 export default userSlice.reducer;
