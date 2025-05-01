@@ -1,28 +1,62 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-hot-toast';
+
 import { fetchUserAddress } from '../features/user/userSlice';
+
 import {
   fetchDeliveryFee,
   resetDeliveryFee,
 } from '../features/order/orderSlice';
 
-// Custom hook for managing delivery logic
-function useOrderDelivery(orderType, geolocation) {
+function useOrderDelivery(orderType) {
   const dispatch = useDispatch();
+  const geolocation = useSelector((state) => state.user.geolocation);
+  const hasTriggeredToast = useRef(false);
 
   useEffect(() => {
-    const hasGeolocation = geolocation?.latitude && geolocation?.longitude;
+    const isDelivery = orderType === 'delivery';
 
-    if (orderType === 'delivery') {
-      // Fetch address if geolocation is not available
-      if (!hasGeolocation) dispatch(fetchUserAddress());
-      // Fetch delivery fee if geolocation is available
-      else dispatch(fetchDeliveryFee(geolocation));
+    if (isDelivery && !hasTriggeredToast.current) {
+      hasTriggeredToast.current = true;
+
+      const calculateDeliveryFee = async () => {
+        try {
+          await toast.promise(
+            async () => {
+              // use existing geolocation or fetch it
+              let coords = geolocation;
+
+              const isCoordsMissing = !coords?.latitude || !coords?.longitude;
+              if (isCoordsMissing) {
+                const result = await dispatch(fetchUserAddress()).unwrap();
+                coords = result.geolocation;
+              }
+
+              // calculate delivery fee using valid geolocation
+              await dispatch(fetchDeliveryFee(coords)).unwrap();
+            },
+            {
+              loading: 'Calculating delivery fee...',
+              success: 'Delivery fee calculated!',
+              error: (err) => err || 'Failed to compute delivery fee!',
+            },
+          );
+        } catch (error) {
+          console.error('Delivery setup failed:', error);
+        }
+      };
+
+      calculateDeliveryFee();
     }
 
-    // Reset fee if order type is not 'delivery'
-    dispatch(resetDeliveryFee());
+    if (!isDelivery) {
+      dispatch(resetDeliveryFee());
+      hasTriggeredToast.current = false;
+    }
   }, [dispatch, geolocation, orderType]);
+
+  return null;
 }
 
 export default useOrderDelivery;
