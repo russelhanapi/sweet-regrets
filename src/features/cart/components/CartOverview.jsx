@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
-import { getTotalCartPrice, getTotalCartQuantity } from './cartSlice';
-import { formatCurrency } from '../../utils/helpers';
-import Button from '../../components/ui/Button';
+import { getTotalCartPrice, getTotalCartQuantity } from '../cartSlice';
+import { formatCurrency } from '../../../utils/helpers';
+import Button from '../../../components/ui/Button';
 
 function CartOverview() {
   const numOfCartItem = useSelector(getTotalCartQuantity);

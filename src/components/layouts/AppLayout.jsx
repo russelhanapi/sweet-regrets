@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, useNavigation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
-import CartOverview from '../../features/cart/CartOverview';
+import CartOverview from '../../features/cart/components/CartOverview';
 import Loader from '../ui/Loader';
 import HeaderNav from './HeaderNav';
 

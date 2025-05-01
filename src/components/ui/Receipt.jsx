@@ -1,5 +1,5 @@
 import { brandLogoWeb } from '../../assets/images';
-import OrderItem from '../../features/order/OrderItem';
+import OrderItem from '../../features/order/components/OrderItem';
 import { formatCurrency, formatDate } from '../../utils/helpers';
 
 function Receipt({ order, orderItems }) {

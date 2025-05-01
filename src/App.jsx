@@ -8,7 +8,7 @@ import CreateOrder, {
   action as createOrderAction,
 } from './features/order/CreateOrder';
 import AppLayout from './components/layouts/AppLayout';
-import ProtectedRoute from './components/ui/ProtectedRoute';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 const router = createBrowserRouter([
   {

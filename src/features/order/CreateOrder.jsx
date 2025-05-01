@@ -7,8 +7,8 @@ import { getCart, getTotalCartPrice } from '../cart/cartSlice';
 import EmptyCart from '../cart/EmptyCart';
 import InputField from '../../components/ui/InputField';
 import Button from '../../components/ui/Button';
-import useCreateOrderForm from '../../hooks/useCreateOrderForm';
-import OrderTypeRadioGroup from './OrderTypeRadioGroup';
+import useCreateOrderForm from './hooks/useCreateOrderForm';
+import OrderTypeRadioGroup from './components/OrderTypeRadioGroup';
 import createOrderAction from './createOrderAction';
 
 function CreateOrder() {
@@ -18,9 +18,7 @@ function CreateOrder() {
     handleSubmit,
     isLoadingAddress,
     isLoadingDeliveryFee,
-    errorAddress,
     distanceInKm,
-    deliveryFeeError,
     isFormValid,
     orderType,
     deliveryFee,

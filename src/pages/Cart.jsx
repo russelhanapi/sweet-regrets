@@ -4,7 +4,7 @@ import {
   getCart,
   getTotalCartQuantity,
 } from '../features/cart/cartSlice';
-import CartItem from '../features/cart/CartItem';
+import CartItem from '../features/cart/components/CartItem';
 import EmptyCart from '../features/cart/EmptyCart';
 import Button from '../components/ui/Button';
 import LinkButton from '../components/ui/LinkButton';

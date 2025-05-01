@@ -1,7 +1,7 @@
 import { IoTrash } from 'react-icons/io5';
 import { useDispatch } from 'react-redux';
-import { deleteItem } from './cartSlice';
-import Button from '../../components/ui/Button';
+import { deleteItem } from '../cartSlice';
+import Button from '../../../components/ui/Button';
 
 function DeleteItem({ itemId }) {
   const dispatch = useDispatch();

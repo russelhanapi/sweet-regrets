@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import SearchOrder from '../../features/order/SearchOrder';
+import SearchOrder from '../../features/order/components/SearchOrder';
 import UserAvatar from '../../features/user/UserAvatar';
 import ResponsiveLogo from '../ui/ResponsiveLogo';
 import DarkModeToggler from '../ui/DarkModeToggler';

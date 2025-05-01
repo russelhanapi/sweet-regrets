@@ -1,5 +1,5 @@
 import { IoSearch } from 'react-icons/io5';
-import InputField from '../../components/ui/InputField';
+import InputField from '../../../components/ui/InputField';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

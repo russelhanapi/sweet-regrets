@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { getUserFullName } from '../../features/user/userSlice';
+import { getUserFullName } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
 
 // ProtectedRoute component that wraps around protected pages or routes

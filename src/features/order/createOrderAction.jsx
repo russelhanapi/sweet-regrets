@@ -1,6 +1,6 @@
 import { redirect } from 'react-router-dom';
 
-import store from '../../../store';
+import store from '../../store';
 import { addOrderItems, createOrder, getMenu } from '../../services/apiBakery';
 import { calculateEstimatedTime } from '../../utils/helpers';
 import { clearCart } from '../cart/cartSlice';

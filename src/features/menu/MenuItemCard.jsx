@@ -2,8 +2,8 @@ import { IoCart } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem, getQuantityByID } from '../cart/cartSlice';
 import { formatCurrency } from '../../utils/helpers';
-import DeleteItem from '../cart/DeleteItem';
-import UpdateItemQuantity from '../cart/UpdateItemQuantity';
+import DeleteItem from '../cart/components/DeleteItem';
+import UpdateItemQuantity from '../cart/components/UpdateItemQuantity';
 import Button from '../../components/ui/Button';
 import Badge from '../../components/ui/Badge';
 

@@ -1,14 +1,8 @@
 import { useEffect, useRef, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-hot-toast';
-import {
-  fetchUserAddress,
-  resetUserLocation,
-} from '../features/user/userSlice';
-import {
-  fetchDeliveryFee,
-  resetDeliveryFee,
-} from '../features/order/orderSlice';
+import { fetchUserAddress, resetUserLocation } from '../../user/userSlice';
+import { fetchDeliveryFee, resetDeliveryFee } from '../orderSlice';
 
 function useOrderDelivery(orderType, geolocation) {
   const dispatch = useDispatch();

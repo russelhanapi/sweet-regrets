@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { IoAddOutline, IoRemoveOutline } from 'react-icons/io5';
-import { increaseItemQuantity, decreaseItemQuantity } from '../cart/cartSlice';
-import Button from '../../components/ui/Button';
+import { increaseItemQuantity, decreaseItemQuantity } from '../cartSlice';
+import Button from '../../../components/ui/Button';
 
 function UpdateItemQuantity({ itemId, currentItemQuantity }) {
   const dispatch = useDispatch();
