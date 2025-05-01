@@ -1,6 +1,11 @@
+import { useSelector } from 'react-redux';
 import CreateUser from '../features/user/CreateUser';
+import { getUserFullName } from '../features/user/userSlice';
+import Button from '../components/ui/Button';
 
 function Home() {
+  const userFullName = useSelector(getUserFullName);
+
   return (
     <div className='hero bg-base-200 min-h-full'>
       <div className='hero-content text-center'>
@@ -16,7 +21,18 @@ function Home() {
             </span>
             (And maybe take a nap... Or cry... Either way, you’ll be back.)
           </p>
-          <CreateUser />
+          {!userFullName ? (
+            <CreateUser />
+          ) : (
+            <div className='w-full px-4 py-4 sm:px-8'>
+              <p className='text-accent mb-5 font-medium'>
+                {userFullName}, back for more?
+              </p>
+              <Button to='/menu' type='primary'>
+                Browse Menu
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
