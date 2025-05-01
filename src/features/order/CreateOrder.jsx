@@ -137,6 +137,10 @@ function CreateOrder() {
               disabled={!isFormValid || isLoadingDeliveryFee || isSubmitting}
               type='primary'
             >
+              {isSubmitting && (
+                <span className='loading loading-spinner loading-xs'></span>
+              )}
+
               {!isFormValid
                 ? 'Please complete all required fields'
                 : isLoadingDeliveryFee
