@@ -134,7 +134,7 @@ function CreateOrder() {
             </fieldset>
 
             <Button
-              disabled={!isFormValid || isLoadingDeliveryFee}
+              disabled={!isFormValid || isLoadingDeliveryFee || isSubmitting}
               type='primary'
             >
               {!isFormValid
