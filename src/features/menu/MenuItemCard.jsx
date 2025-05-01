@@ -44,7 +44,7 @@ function MenuItemCard({ item }) {
         <div
           className='border-base-300 h-50 w-full rounded-sm border-2 bg-cover bg-center sm:h-full sm:w-24 sm:rounded-2xl'
           style={{
-            backgroundImage: `url(https://bakewithshivesh.com/wp-content/uploads/2020/09/IMG-8129-1-scaled.jpg)`,
+            backgroundImage: `url(${imageUrl})`,
           }}
         ></div>
         <div className='grow'>
