@@ -8,6 +8,7 @@ import CreateOrder, {
   action as createOrderAction,
 } from './features/order/CreateOrder';
 import AppLayout from './components/layouts/AppLayout';
+import ProtectedRoute from './components/ui/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -17,14 +18,29 @@ const router = createBrowserRouter([
       { path: '/', element: <Home /> },
       {
         path: '/menu',
-        element: <Menu />,
+        element: (
+          <ProtectedRoute>
+            <Menu />
+          </ProtectedRoute>
+        ),
         loader: menuLoader,
         errorElement: <Error />,
       },
-      { path: '/cart', element: <Cart /> },
+      {
+        path: '/cart',
+        element: (
+          <ProtectedRoute>
+            <Cart />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '/order/new',
-        element: <CreateOrder />,
+        element: (
+          <ProtectedRoute>
+            <CreateOrder />
+          </ProtectedRoute>
+        ),
         action: createOrderAction,
       },
       {
