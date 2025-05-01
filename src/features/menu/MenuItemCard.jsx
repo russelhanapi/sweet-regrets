@@ -29,7 +29,7 @@ function MenuItemCard({ item }) {
       name,
       quantity: 1,
       price,
-      totalPrice: price + 1,
+      totalPrice: price,
     };
     dispatch(addItem(newItem));
   }
