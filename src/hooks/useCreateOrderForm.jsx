@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import useOrderDelivery from './useOrderDelivery';
 
-// Custom hook that encapsulates the create order form logic
 function useCreateOrderForm() {
   const {
     fullName,
@@ -24,17 +24,24 @@ function useCreateOrderForm() {
     formState: { errors },
     control,
     handleSubmit,
+    setValue,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
       fullName: fullName,
       orderType: 'pickup',
-      address: address,
     },
   });
 
   const orderType = useWatch({ control, name: 'orderType' });
   useOrderDelivery(orderType, geolocation);
+
+  useEffect(() => {
+    if (orderType === 'delivery' && address) {
+      setValue('address', address);
+    }
+  }, [address, orderType, setValue]);
+
   const isLoadingAddress = addressStatus === 'loading';
   const isLoadingDeliveryFee = deliveryFeeStatus === 'loading';
   const isFormValid = Object.keys(errors).length === 0;
