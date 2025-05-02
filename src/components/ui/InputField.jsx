@@ -17,12 +17,14 @@ function InputField({
   return (
     <div className='w-full'>
       <label
+        htmlFor={name}
         className={`input w-full ${
           hasError ? 'border-error focus-within:ring-error' : ''
         }`}
       >
         {icon}
         <input
+          id={name}
           type={type}
           placeholder={placeholder}
           {...(register && name

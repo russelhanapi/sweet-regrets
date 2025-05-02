@@ -19,11 +19,16 @@ function DarkModeToggler() {
   }, [theme]);
 
   return (
-    <label className='bg-neutral swap swap-rotate text-neutral-content w-12 rounded-full'>
+    <label
+      htmlFor='theme-toggler'
+      className='bg-neutral swap swap-rotate text-neutral-content w-12 rounded-full'
+    >
       <input
         type='checkbox'
+        id='theme-toggler'
         onChange={toggleTheme}
         checked={theme === 'dark'}
+        aria-label='Toggle dark mode'
       />
       <IoSunny className='swap-off text-xl' />
       <IoMoon className='swap-on text-xl' />
