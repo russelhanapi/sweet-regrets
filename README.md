@@ -5,9 +5,6 @@
 Inspired by the way we all sometimes give in to indulgence, whether it’s a comforting dessert or a choice we make, knowing it might not be the best decision for us. Sweet Regrets is about accepting those moments for what they are. It’s not about glorifying bad choices, it’s about understanding their place in life, and accepting that we don’t always make perfect choices — and that’s okay.
 
 ## Built With
-[![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white)](#)
-[![CSS](https://img.shields.io/badge/CSS-1572B6?logo=css3&logoColor=fff)](#)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000)](#)
 [![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](#)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?logo=tailwind-css&logoColor=white)](#)
 [![DaisyUI](https://img.shields.io/badge/DaisyUI-5A0FC8?logo=daisyui&logoColor=white)](#)
