@@ -38,10 +38,11 @@
   --noise: 1;
 }
 
+/* We will not respect the user's pref hehe */
 @plugin "daisyui/theme" {
   name: 'dark';
   default: false;
-  prefersdark: true;
+  prefersdark: false;
   color-scheme: 'dark';
   --color-base-100: #31232b;
   --color-base-200: #24161e;
