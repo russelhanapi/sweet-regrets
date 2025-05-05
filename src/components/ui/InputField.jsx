@@ -41,7 +41,9 @@ function InputField({
       {hasError && (
         <div className='text-error-content border-error bg-error/12 mt-2 flex items-center gap-2 rounded-lg border-l-4 p-2 text-sm'>
           <IoWarningOutline className='text-error' />
-          <span className='text-neutral'>{errors[name]?.message}</span>
+          <span className='text-neutral dark:text-neutral-content'>
+            {errors[name]?.message}
+          </span>
         </div>
       )}
     </div>
