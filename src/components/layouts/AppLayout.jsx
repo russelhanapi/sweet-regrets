@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Outlet, useNavigation } from 'react-router-dom';
+import { Outlet, useLocation, useNavigation } from 'react-router-dom';
 
 import CartOverview from '../../features/cart/components/CartOverview';
 import Loader from '../ui/Loader';
@@ -8,6 +8,7 @@ import HotToast from '../ui/HotToast';
 
 function AppLayout() {
   const navigation = useNavigation();
+  const currentPath = useLocation().pathname;
   const isLoading = navigation.state === 'loading';
   return (
     <div className='grid h-screen grid-rows-[auto_1fr_auto]'>
@@ -19,7 +20,8 @@ function AppLayout() {
           <Outlet />
         </Suspense>
       </main>
-      <CartOverview />
+      {/* Cartview should not be visible in ordering form page */}
+      {currentPath !== '/order/new' && <CartOverview />}
     </div>
   );
 }
